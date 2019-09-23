@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+//define an interface
+//create a new type of bot which is an interface, any function called getGreeting with a return value of string now is also of type bot.
 type bot interface {
 	getGreeting() string
 }
@@ -27,7 +29,7 @@ func (spanishBot) getGreeting() string {
 // 	fmt.Println(sb.getGreeting())
 // }
 
-//interfaces for printGreeting function
+//use interface for printGreeting function
 func printGreeting(b bot) {
 	fmt.Println(b.getGreeting())
 }
