@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 )
 
 func main() {
@@ -23,18 +24,37 @@ func main() {
 	// fmt.Println(<-c)
 	// fmt.Println(<-c)
 	// fmt.Println(<-c)
-	for i := 0; i < len(links); i++ {
-		fmt.Println(<-c)
+
+	// for i := 0; i < len(links); i++ {
+	// fmt.Println(<-c)
+	// }
+
+	//call the same website again continuously by passing the actually link called into the channel to be called again
+	// for {
+	// 	go checkLink(<-c, c)
+	// }
+
+	//alternate to above inifinite loop
+	for l := range c {
+		go func(link string) {
+			time.Sleep(5 * time.Second)
+			checkLink(link, c)
+		}(l)
 	}
+	// for l := range c {
+	// 		time.Sleep(5 * time.Second)
+	// 		go checkLink(l, c)
+	// }
+
 }
 
 func checkLink(link string, c chan string) {
 	_, err := http.Get(link)
 	if err != nil {
 		fmt.Println(link, " might be down")
-		c <- "Might be down I think"
+		c <- link
 		return
 	}
 	fmt.Println(link, " is up")
-	c <- "Yep its up"
+	c <- link
 }
